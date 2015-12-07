@@ -203,7 +203,7 @@ class Menu extends ZendMenu
                 $liClasses[] = 'active';
             }
             // Is page parent?
-            if ($page->hasChildren() && (!isset($maxDepth) || $depth < $maxDepth)) {
+            if ($page->hasPages() && (!isset($maxDepth) || $depth < $maxDepth)) {
                 if (!isset($page->dropdown) || $page->dropdown == true) {
                     $liClasses[] = 'dropdown';
                     $page->isDropdown = true;
@@ -215,8 +215,14 @@ class Menu extends ZendMenu
             }
             $liClass = empty($liClasses) ? '' : ' class="' . implode(' ', $liClasses) . '"';
 
-            $html .= $myIndent . '    <li' . $liClass . '>' . self::EOL
-                . $myIndent . '        ' . $this->htmlify($page, $escapeLabels, $addClassToListItem) . self::EOL;
+            if ($page->getClass() == 'divider'){
+                $html .= $myIndent . '    <li class="divider">' . self::EOL;
+            }else{
+                $html .= $myIndent . '    <li' . $liClass . '>' . self::EOL
+                    . $myIndent . '        ' . $this->htmlify($page, $escapeLabels, $addClassToListItem) . self::EOL;
+            }
+
+
 
             // store as previous depth for next iteration
             $prevDepth = $depth;
